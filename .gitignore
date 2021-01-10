@@ -1,0 +1,3 @@
+*.png
+/model_output/
+cnn_cifar10_weights.py
