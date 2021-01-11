@@ -75,27 +75,27 @@ X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides=(1,1), padding='sam
 X = layers.Activation('relu')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding='same',
-                  kernel_regularizer=keras.regularizers.l2(0.05))(X)
+                  kernel_regularizer=keras.regularizers.l2(0.1))(X)
 X = layers.Activation('relu')(X)
 
 # Girdimizdeki bilgileri 16'lik bir derinlige aktaralim
 X = layers.Conv2D(filters = 32, kernel_size = (2,2), strides = (2,2), padding = 'valid', name = 'CONV2D_1',
-                  kernel_regularizer = keras.regularizers.l2(0.05))(X)
+                  kernel_regularizer = keras.regularizers.l2(0.1))(X)
 X = layers.Activation('relu', name = 'RELU_1')(X)
 #X = layers.Dropout(0.3)(X)
 #print('1. Layer aktivasyon X.shape = ', X.shape)
 
 X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_2',
-                  kernel_regularizer=keras.regularizers.l2(0.05))(X)
+                  kernel_regularizer=keras.regularizers.l2(0.1))(X)
 #X = layers.BatchNormalization(axis = -1, name = 'BN_2')(X)
 X = layers.Activation('relu')(X)
 
 X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_3',
-                  kernel_regularizer=keras.regularizers.l2(0.05))(X)
+                  kernel_regularizer=keras.regularizers.l2(0.1))(X)
 X = layers.Activation('relu')(X)
 
 X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (3,3), padding = 'valid',
-                  kernel_regularizer=keras.regularizers.l2(0.05))(X)
+                  kernel_regularizer=keras.regularizers.l2(0.1))(X)
 X = layers.Activation('relu')(X)
 
 X = layers.Flatten()(X)
@@ -111,13 +111,13 @@ keras.utils.plot_model(model, model_name + ".png", show_shapes = True)
 # Egitilmis modeli yukleyelim
 model = keras.models.load_model('./model_output/' + model_name)
 
-opt = keras.optimizers.SGD(learning_rate = 2e-4, momentum=0.9)
+opt = keras.optimizers.SGD(learning_rate = 1e-4, momentum=0.9)
 # Compiling ayarlayalim
 model.compile(optimizer = opt,
                 loss = tf.keras.losses.CategoricalCrossentropy(),
                 metrics = ['accuracy'])
 
-model.fit(train_images, train_labels_oh, epochs = 60, batch_size=32,
+model.fit(train_images, train_labels_oh, epochs = 20, batch_size=32,
           validation_data=(test_images, test_labels_oh), verbose = 1)
 
 score = model.evaluate(x=test_images, y=test_labels_oh, verbose=2)
