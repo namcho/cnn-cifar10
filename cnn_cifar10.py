@@ -71,11 +71,11 @@ test_images = test_images / 255.0
 image_input = layers.Input(shape = (train_images.shape[1:]), dtype=tf.float32)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides=(1,1), padding='same',
-                  kernel_regularizer=keras.regularizers.l2(0.05))(image_input)
+                  kernel_regularizer=keras.regularizers.l2(0.2))(image_input)
 X = layers.Activation('relu')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding='same',
-                  kernel_regularizer=keras.regularizers.l2(0.1))(X)
+                  kernel_regularizer=keras.regularizers.l2(0.2))(X)
 X = layers.Activation('relu')(X)
 
 # Girdimizdeki bilgileri 16'lik bir derinlige aktaralim
@@ -100,8 +100,8 @@ X = layers.Activation('relu')(X)
 
 X = layers.Flatten()(X)
 
-X = layers.Dense(units = 256, activation='relu')(X)
-X = layers.Dropout(0.5)(X)
+X = layers.Dense(units = 256, activation='relu', kernel_regularizer=keras.regularizers.l2(0.05))(X)
+X = layers.Dropout(0.3)(X)
 outputs_cnn = layers.Dense(units = 10, activation = 'softmax')(X)
 
 model = tf.keras.Model(inputs = image_input, outputs = outputs_cnn, name = 'cifar10')
@@ -111,13 +111,13 @@ keras.utils.plot_model(model, model_name + ".png", show_shapes = True)
 # Egitilmis modeli yukleyelim
 model = keras.models.load_model('./model_output/' + model_name)
 
-opt = keras.optimizers.SGD(learning_rate = 1e-4, momentum=0.9)
+opt = keras.optimizers.SGD(learning_rate = 5e-4, momentum=0.9)
 # Compiling ayarlayalim
 model.compile(optimizer = opt,
                 loss = tf.keras.losses.CategoricalCrossentropy(),
                 metrics = ['accuracy'])
 
-model.fit(train_images, train_labels_oh, epochs = 20, batch_size=32,
+model.fit(train_images, train_labels_oh, epochs = 120, batch_size=32,
           validation_data=(test_images, test_labels_oh), verbose = 1)
 
 score = model.evaluate(x=test_images, y=test_labels_oh, verbose=2)
