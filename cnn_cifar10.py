@@ -111,14 +111,19 @@ keras.utils.plot_model(model, model_name + ".png", show_shapes = True)
 # Egitilmis modeli yukleyelim
 model = keras.models.load_model('./model_output/' + model_name)
 
-opt = keras.optimizers.SGD(learning_rate = 5e-4, momentum=0.9)
+opt = keras.optimizers.SGD(learning_rate = 1e-3, momentum=0.9)
 # Compiling ayarlayalim
 model.compile(optimizer = opt,
                 loss = tf.keras.losses.CategoricalCrossentropy(),
                 metrics = ['accuracy'])
 
-model.fit(train_images, train_labels_oh, epochs = 120, batch_size=32,
-          validation_data=(test_images, test_labels_oh), verbose = 1)
+#Tensorboard ayarlari
+log_dir = "logs\\fit\\" + '_EPOCH20_' + datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
+model.fit(train_images, train_labels_oh, epochs = 20, batch_size=32,
+          validation_data=(test_images, test_labels_oh), verbose = 1,
+          callbacks=[tensorboard_callback])
 
 score = model.evaluate(x=test_images, y=test_labels_oh, verbose=2)
 
