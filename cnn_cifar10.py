@@ -47,7 +47,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 # Model name that we're gonna generate
-model_name = 'CNN_V13_Cifar10'
+model_name = 'CNN_V14_Cifar10'
 class_count = 10
 (train_images, train_labels), (test_images, test_labels) = keras.datasets.cifar10.load_data()
 print('train_images.shape = ', train_images.shape)
@@ -71,20 +71,20 @@ test_images = test_images / 255.0
 image_input = layers.Input(shape = (train_images.shape[1:]), dtype=tf.float32)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides=(1,1), padding='same', name = 'CONV2D_1',
-                  kernel_regularizer=keras.regularizers.l2(0.001))(image_input)
+                  kernel_regularizer=keras.regularizers.l2(0.0001))(image_input)
 X = layers.BatchNormalization(axis = -1, name = 'BN1_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN1_2')(X)
 
-X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding='same', name 'CONV2D_2',
-                  kernel_regularizer=keras.regularizers.l2(0.001))(X)
+X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (1,1), padding='same', name = 'CONV2D_2',
+                  kernel_regularizer=keras.regularizers.l2(0.0001))(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN2_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN2_2')(X)
 
 # Girdimizdeki bilgileri 16'lik bir derinlige aktaralim
-X = layers.Conv2D(filters = 32, kernel_size = (2,2), strides = (2,2), padding = 'valid', name = 'CONV2D_3',
-                  kernel_regularizer = keras.regularizers.l2(0.001))(X)
+X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (1,1), padding = 'same', name = 'CONV2D_3',
+                  kernel_regularizer = keras.regularizers.l2(0.0001))(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN3_1')(X)
 X = layers.Activation('relu', name = 'RELU_1')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN3_2')(X)
@@ -92,26 +92,42 @@ X = layers.BatchNormalization(axis = -1, name = 'BN3_2')(X)
 #print('1. Layer aktivasyon X.shape = ', X.shape)
 
 X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_4',
-                  kernel_regularizer=keras.regularizers.l2(0.001))(X)
+                  kernel_regularizer=keras.regularizers.l2(0.0001))(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN4_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN4_2')(X)
+# 30x30 oldu
 
-X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_5',
-                  kernel_regularizer=keras.regularizers.l2(0.001))(X)
+X = layers.Conv2D(filters = 96, kernel_size = (2,2), strides = (2,2), padding = 'valid', name = 'CONV2D_5',
+                  kernel_regularizer=keras.regularizers.l2(0.0001))(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN5_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN5_2')(X)
+# 15x15 oldu
 
-X = layers.Conv2D(filters = 64, kernel_size = (3,3), strides = (3,3), padding = 'valid', name = 'CONV2D_6',
-                  kernel_regularizer=keras.regularizers.l2(0.001))(X)
+X = layers.Conv2D(filters = 96, kernel_size = (3,3), strides = (1,1), padding = 'same', name = 'CONV2D_6',
+                  kernel_regularizer=keras.regularizers.l2(0.0001))(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN6_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN6_2')(X)
 
+X = layers.Conv2D(filters = 96, kernel_size = (3,3), strides = (1,1), padding = 'same', name = 'CONV2D_7',
+                        kernel_regularizer=keras.regularizers.l2(0.0001))(X)
+X = layers.BatchNormalization(axis = -1, name = 'BN7_1')(X)
+X = layers.Activation('relu')(X)
+X = layers.BatchNormalization(axis = -1, name = 'BN7_2')(X)
+
+X = layers.Conv2D(filters = 128, kernel_size = (3,3), strides = (2,2), padding = 'valid', name = 'CONV2D_8',
+                        kernel_regularizer=keras.regularizers.l2(0.0001))(X)
+X = layers.BatchNormalization(axis = -1, name = 'BN8_1')(X)
+X = layers.Activation('relu')(X)
+X = layers.BatchNormalization(axis = -1, name = 'BN8_2')(X)
+# 7x7 oldu
+
+
 X = layers.Flatten()(X)
 
-X = layers.Dense(units = 256, activation='relu', kernel_regularizer=keras.regularizers.l2(0.001))(X)
+X = layers.Dense(units = 128, activation='relu', kernel_regularizer=keras.regularizers.l2(0.001))(X)
 X = layers.Dropout(0.3)(X)
 outputs_cnn = layers.Dense(units = 10, activation = 'softmax')(X)
 
@@ -120,19 +136,18 @@ model.summary()
 keras.utils.plot_model(model, model_name + ".png", show_shapes = True)
 
 # Egitilmis modeli yukleyelim
-#model = keras.models.load_model('./model_output/' + model_name)
-
-opt = keras.optimizers.SGD(learning_rate = 1e-2, momentum=0.9)
+model = keras.models.load_model('./model_output/' + model_name)
+opt = keras.optimizers.SGD(learning_rate = 1e-3, momentum=0.9)
 # Compiling ayarlayalim
 model.compile(optimizer = opt,
                 loss = tf.keras.losses.CategoricalCrossentropy(),
                 metrics = ['accuracy'])
 
 #Tensorboard ayarlari
-log_dir = "logs\\fit\\" + model_name + '_EPOCH20_' + datetime.now().strftime("%Y%m%d-%H%M")
+log_dir = "logs\\fit\\" + model_name + '_EPOCH10_' + datetime.now().strftime("%Y%m%d-%H%M")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
-model.fit(train_images, train_labels_oh, epochs = 20, batch_size=256,
+model.fit(train_images, train_labels_oh, epochs = 10, batch_size=128,
           validation_data=(test_images, test_labels_oh), verbose = 1,
           callbacks=[tensorboard_callback])
 
@@ -141,7 +156,7 @@ score = model.evaluate(x=test_images, y=test_labels_oh, verbose=2)
 print('Evaluation score = ', score)
 
 # Modeli kaydedelim
-model.save('./model_output/' + model_name)
+#model.save('model_output\\' + model_name)
 
 # Egitim sonrasi performans
 preds = model.predict(test_images[:40])
