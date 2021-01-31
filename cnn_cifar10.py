@@ -57,7 +57,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 
 # Model name that we're gonna generate
-model_name = 'CNN_V16-1_Cifar10'
+model_name = 'CNN_V16-2_Cifar10'
 class_count = 10
 penalty = 0.0001
 (train_images, train_labels), (test_images, test_labels) = keras.datasets.cifar10.load_data()
@@ -83,20 +83,20 @@ image_input = layers.Input(shape = (train_images.shape[1:]), dtype=tf.float32)
 
 X = layers.Conv2D(filters = 16, kernel_size = (3,3), strides=(1,1), padding='same', name = 'CONV2D_1',
                   kernel_regularizer=keras.regularizers.l2(penalty))(image_input)
-X = layers.BatchNormalization(axis = -1, name = 'BN1_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN1_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN1_2')(X)
 
 X = layers.Conv2D(filters = 16, kernel_size = (3,3), strides = (1,1), padding='same', name = 'CONV2D_2',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN2_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN2_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN2_2')(X)
 
 # Girdimizdeki bilgileri 16'lik bir derinlige aktaralim
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'same', name = 'CONV2D_3',
                   kernel_regularizer = keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN3_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN3_1')(X)
 X = layers.Activation('relu', name = 'RELU_1')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN3_2')(X)
 #X = layers.Dropout(0.3)(X)
@@ -104,63 +104,63 @@ X = layers.BatchNormalization(axis = -1, name = 'BN3_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_4',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN4_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN4_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN4_2')(X)
 # 30x30 oldu
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_5',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN5_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN5_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN5_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_6',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN6_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN6_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN6_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_7',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN7_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN7_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN7_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_8',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN8_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN8_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN8_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_9',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN9_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN9_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN9_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_10',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN10_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN10_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN10_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_11',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN11_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN11_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN11_2')(X)
 
 X = layers.Conv2D(filters = 32, kernel_size = (3,3), strides = (1,1), padding = 'valid', name = 'CONV2D_12',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN12_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN12_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN12_2')(X)
 # 16x16 oldu
 
 X = layers.Conv2D(filters = 32, kernel_size = (2,2), strides = (2,2), padding = 'valid', name = 'CONV2D_13',
                   kernel_regularizer=keras.regularizers.l2(penalty))(X)
-X = layers.BatchNormalization(axis = -1, name = 'BN13_1')(X)
+#X = layers.BatchNormalization(axis = -1, name = 'BN13_1')(X)
 X = layers.Activation('relu')(X)
 X = layers.BatchNormalization(axis = -1, name = 'BN13_2')(X)
 # 7x7 oldu
@@ -206,7 +206,7 @@ keras.utils.plot_model(model, model_name + ".png", show_shapes = True)
 
 # Egitilmis modeli yukleyelim
 model = keras.models.load_model('./model_output/' + model_name)
-opt = keras.optimizers.SGD(learning_rate = 1e-4, momentum=0.9)
+opt = keras.optimizers.SGD(learning_rate = 1e-5, momentum=0.9)
 # Compiling ayarlayalim
 model.compile(optimizer = opt,
                 loss = tf.keras.losses.CategoricalCrossentropy(),
@@ -216,10 +216,10 @@ model.compile(optimizer = opt,
 # Windows icin:
 #log_dir = "logs\\fit\\" + model_name + '_EPOCH20_' + datetime.now().strftime("%Y%m%d-%H%M")
 # Linux icin:
-log_dir = "logs/fit/" + model_name + '_EPOCH60_' + datetime.now().strftime("%Y%m%d-%H%M")
+log_dir = "logs/fit/" + model_name + '_EPOCH80_' + datetime.now().strftime("%Y%m%d-%H%M")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
-model.fit(train_images, train_labels_oh, epochs = 40, batch_size=64,
+model.fit(train_images, train_labels_oh, epochs = 40, batch_size=128,
           validation_data=(test_images, test_labels_oh), verbose = 1,
           callbacks=[tensorboard_callback])
 
